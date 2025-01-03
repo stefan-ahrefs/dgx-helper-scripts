@@ -1,0 +1,6 @@
+#!/bin/bash
+
+. "$(dirname "$0")/action-functions.sh"
+
+scrin "${1}-health-dump" "ssh ${1} nvsm dump health \\; mv /tmp/nvsm-health-*.tar.xz ${DUMP_DIR}"
+

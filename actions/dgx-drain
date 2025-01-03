@@ -1,0 +1,10 @@
+#!/bin/bash
+
+. "$(dirname "$0")/action-functions.sh"
+
+if [ "$2" != "" ] ; then
+	cmsh -c "device drain $1 --reason \"$2\""
+else
+	cmsh -c "device drain $1"
+fi
+

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+. "$(dirname "$0")/action-functions.sh"
+
+echo -n "Wait for BMC to come up "
+while cmsh -c "device power status $1" | grep FAIL >/dev/null ; do
+  echo -n . ; sleep 1
+done
+echo " UP"
+echo "BMC of $1 is up. Sending power on command"
+cmsh -c "device power on $1"
+
+
+

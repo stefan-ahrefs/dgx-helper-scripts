@@ -1,0 +1,7 @@
+#!/bin/bash
+
+. "$(dirname "$0")/action-functions.sh"
+
+scrin "${1}-BMC_LCD" "cd .. ; ./D05-get-BMC-LCD-code.sh $1"
+
+

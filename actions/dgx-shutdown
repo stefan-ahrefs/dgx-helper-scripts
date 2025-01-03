@@ -1,0 +1,11 @@
+#!/bin/bash
+
+. "$(dirname "$0")/action-functions.sh"
+
+cmsh -c "device shutdown $1"
+echo -n "Waiting for BMC shutdown "
+while cmsh -c "device power status $1" | grep ON >/dev/null ; do
+  echo -n . ; sleep 1
+done
+echo " OFF"
+

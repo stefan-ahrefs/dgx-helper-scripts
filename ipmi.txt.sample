@@ -1,0 +1,3 @@
+# add BMC IP for all DGX hosts separated by space of the hostname
+10.0.0.1 dgx001
+10.0.0.2 dgx002

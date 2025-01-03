@@ -1,0 +1,6 @@
+#!/bin/bash
+
+. "$(dirname "$0")/action-functions.sh"
+
+cmsh -c "device undrain $1"
+

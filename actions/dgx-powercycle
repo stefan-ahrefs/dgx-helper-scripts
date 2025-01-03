@@ -1,0 +1,14 @@
+#!/bin/bash
+
+. "$(dirname "$0")/action-functions.sh"
+
+DURATION=30
+if [ "$2" != "" ] ; then 
+  DURATION="$2"
+fi
+
+echo "Power cycling $1 with $DURATION seconds drain"
+./powercycle.sh -d "$DURATION" "$1" 2>&1 | while read -r line ; do echo "  > $line" ; done
+echo "Power cycle with $DURATION seconds drain of $1 completed"
+
+

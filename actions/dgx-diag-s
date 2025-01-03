@@ -1,0 +1,6 @@
+#!/bin/bash
+
+. "$(dirname "$0")/action-functions.sh"
+
+scrin "${1}-dcgmi-diag" "ssh $1 dcgmi diag -r 4"
+

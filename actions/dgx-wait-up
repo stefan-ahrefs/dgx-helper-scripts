@@ -1,0 +1,19 @@
+#!/bin/bash
+
+. "$(dirname "$0")/action-functions.sh"
+
+echo -n "Waiting for $1 to come up"
+STATUS=zzz
+CURRENT=$(cmsh -c "device get $1 status" | cut -c3- | cut -f1 -d])
+echo -n "$CURRENT"
+while [ "$CURRENT" != "  UP   " ] ; do
+  STATUS=$CURRENT
+  CURRENT=$(cmsh -c "device get $1 status" | cut -c3- | cut -f1 -d])
+  if [ "$CURRENT" == "$STATUS" ] ; then
+    echo -n .
+  else
+    echo -n "$CURRENT"
+  fi
+  sleep 5
+done
+echo " $1 is up"

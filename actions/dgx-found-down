@@ -1,0 +1,45 @@
+#!/bin/bash
+
+. "$(dirname "$0")/action-functions.sh"
+
+./dgx-drain "$1"
+./dgx-get-LCD-s "$1"
+OUTF="${DUMP_DIR}/$(date +%Y%m%d)-$1-BMC_LCD.txt"
+wait-for-file "$OUTF"
+OUTPUT=$(tail -2 "$OUTF" | head -1)
+if [ "$OUTPUT" = "0002 : 0000" ] ; then 
+	echo LCD value matches 0002 : 0000
+else
+	echo "LCD value unknown #$OUTPUT#. Exiting"
+	exit 1
+fi
+
+echo $(rg "$1" ../ipmi.txt) $(rg "$1" qts-servers-connections | cut -f1)
+echo "!!! You need to connect to the BMC web ui and download SELTEXT LOG before powering the server on"
+echo -n "press Enter when done "
+read junk
+
+./dgx-poweron "$1"
+./dgx-wait-up "$1"
+./dgx-diag-s "$1"
+OUTF="${DUMP_DIR}/$(date +%Y%m%d)-$1-dcgmi-diag.txt"
+wait-for-file $OUTF
+
+if [ $(cmsh -c "device power status $1" | cut -f2 -d\[ | cut -f1 -d\]) = OFF ] ; then
+	# server is down  after running diag. need to get a new BMC SEL
+	echo $(rg "$1" ../ipmi.txt) $(rg "$1" qts-servers-connections | cut -f1)
+	echo "!!! Server powered off itself during diag. Please save a new SELTEXT LOG from BMC web ui"
+else
+	echo $(rg "$1" ../ipmi.txt) $(rg "$1" qts-servers-connections | cut -f1)
+	if rg -q Fail "$OUTF" ; then
+		echo "diag failed on $1. please check the log"
+		rg Fail "$OUTF"
+		echo "All logs generated, you can download them and create the ticket for the server"
+		echo "if both failures seen in BMC SEL were from the same GPU usually Nvidia does the RMA for it"
+	else
+		echo "diag didn't fail on $1. please check the log for details"
+		echo "All logs generated, you can download them and create the ticket for the server"
+		echo "if diag fail to reproduce the issue. Nvidia may not aprove the GPU RMA or will ask for additional logs"
+
+	fi
+fi

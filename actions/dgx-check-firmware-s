@@ -1,0 +1,7 @@
+#!/bin/bash
+
+. "$(dirname "$0")/action-functions.sh"
+
+scrin "${1}-show_version" "cd .. ; ./01-check.sh $1"
+
+

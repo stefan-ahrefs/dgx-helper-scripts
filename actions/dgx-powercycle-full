@@ -1,0 +1,7 @@
+#!/bin/bash
+
+ACTIONS_HOME="$(dirname "$0")"
+"${ACTIONS_HOME}/dgx-shutdown" "$1"
+"${ACTIONS_HOME}/dgx-powercycle" "$1" 300
+"${ACTIONS_HOME}/dgx-poweron" "$1"
+"${ACTIONS_HOME}/dgx-wait-up" "$1"

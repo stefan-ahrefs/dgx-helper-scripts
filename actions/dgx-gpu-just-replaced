@@ -1,0 +1,24 @@
+#!/bin/bash
+
+ACTIONS_HOME=$(dirname $0)
+# first we power on the server so server detects the GPU
+${ACTIONS_HOME}/dgx-poweron $1
+${ACTIONS_HOME}/dgx-wait-up $1
+# check the number of visible GPUs and their type
+
+# we do a power drain cycle
+${ACTIONS_HOME}/dgx-shutdown $1
+${ACTIONS_HOME}/dgx-powercycle $1 300
+${ACTIONS_HOME}/dgx-poweron $1
+${ACTIONS_HOME}/dgx-wait-up $1
+
+# upgrade firmware of the GPUs
+
+# power drain cycle again
+
+# check firmware versions of all GPUs
+
+# run diag
+
+# dump health
+

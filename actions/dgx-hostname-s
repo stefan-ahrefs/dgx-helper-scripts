@@ -1,0 +1,7 @@
+#!/bin/bash
+
+. "$(dirname "$0")/action-functions.sh"
+
+scrin "${1}-hostname" "ssh $1 hostname ; date ; sleep 5 ; date ; false"
+
+

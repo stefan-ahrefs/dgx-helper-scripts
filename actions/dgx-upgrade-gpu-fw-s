@@ -1,0 +1,7 @@
+#!/bin/bash
+
+. "$(dirname "$0")/action-functions.sh"
+
+scrin "${1}-upgrade-gpus" "cd .. ; ./11-upgrade-gpu.sh $1"
+
+
